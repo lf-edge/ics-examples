@@ -1,0 +1,37 @@
+{
+  "pe-server": "http://127.0.0.1:8889",
+  "refresh-rate": 10,
+  "recasters": [
+    {
+      "Name": "qwerty",
+      "PatchEnvelopes": [
+        "69bac069-f4c3-435a-b4e7-d635b60e9b5a",
+        "69bac069-f4c3-435a-b4e7-777777777777"
+      ],
+      "Templates": {
+	"body": "{\"filename\" : \"firewall_config\", \"file_content\": \"$(69bac069-f4c3-435a-b4e7-777777777777/config/data)\"}",
+	"headers": " \"{\"Content-Type\": \"application/json\", \"Accept\": \"application/json\"} \"Authorization\": \"Bearer $(69bac069-f4c3-435a-b4e7-777777777777/token/data) \"" 
+      },
+      "DriverType": "http",
+      "DriverConfig": {
+        "OutputURL": "https://10.1.0.129/api/v2/monitor/system/config-script/upload",
+        "ReqType": "POST"
+      },
+      "BackupType": "http",
+      "BackupConfig": {
+          "LoadType": "GET",
+          "LoadURL": "https://10.1.0.129/api/v2/monitor/system/config/backup?destination=file&scope=global",
+
+          "RestoreType": "POST",
+          "RestoreURL": "https://10.1.0.129/api/v2/monitor/system/config/restore",
+
+          "Parameters": {
+             "load_headers": " \"{\"Content-Type\": \"application/json\", \"Accept\": \"application/json\"} \"Authorization\": \"Bearer $(69bac069-f4c3-435a-b4e7-777777777777/token/data) \"", 
+
+             "restore_headers": " \"{\"Content-Type\": \"application/json\", \"Accept\": \"application/json\"} \"Authorization\": \"Bearer $(69bac069-f4c3-435a-b4e7-777777777777/token/data) \"", 
+             "load_body": "{\"source\" : \"upload\", \"scope\" : \"global\", \"file_content\": \"$(Backup data)\"}"
+          }
+      }
+    }
+  ]
+}
